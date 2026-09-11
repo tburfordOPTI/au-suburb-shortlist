@@ -1,17 +1,17 @@
 # AU Suburb Shortlist
 
-Mobile-friendly Australian suburb investment screen — growth, gross yield, and **cashflow after your mortgage**.
+Nationwide (partial) Australian suburb investment screen — open government + PropTrack published tables.
 
 **Live:** https://tburfordopti.github.io/au-suburb-shortlist/
 
 ## Features
-- **Your deal:** investment budget, deposit, interest rate (defaults to RBA avg new investor P&I; overridable)
-- Filters suburbs whose median fits your budget; sort by cashflow, yield, growth, price, crime
-- Per-card cashflow: purchase / loan / rent / net after 30yr P&I
-- Domain + realestate.com.au deep links capped at your budget
-- Crime badges (relative to state baselines)
+- Your deal: budget, deposit, rate (RBA investor default 6.31%)
+- Cashflow after 30yr P&I per suburb
+- **Refresh data** reloads `data/suburbs.json` (cache-bust) and shows last refresh time
+- Houses + units; Domain / REA deep links
+- Pagination for larger packs
 
-## Data
-Seeded from PropTrack Investor Report 2025 dual-score suburbs (+ Cotality stretch names), with rents derived from reported gross yields where type-matched rent series aren’t wired yet. High-crime suburbs screened out.
+## Coverage
+Not every Australian suburb has a free median. Dataset grows as open VG/rental sources are ingested. Crime HIGH list excluded.
 
-**Not financial advice.** Illustrative only.
+**Not financial advice.**

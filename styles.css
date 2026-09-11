@@ -648,6 +648,8 @@ body {
   border-radius: var(--radius);
   padding: 14px 14px 12px;
   margin-bottom: 12px;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .deal-top {
@@ -698,6 +700,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+  min-width: 0;
+  width: 100%;
 }
 
 .field {
@@ -707,6 +711,8 @@ body {
   font-size: 0.75rem;
   font-weight: 650;
   color: var(--muted);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .field.field-rate {
@@ -714,6 +720,11 @@ body {
 }
 
 .field input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   min-height: var(--touch);
   border: 1px solid var(--border);
   background: var(--bg);
@@ -723,12 +734,23 @@ body {
   font-size: 1rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  /* stop long numbers / mobile zoom from blowing the card */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .field small {
   font-weight: 500;
   color: var(--muted);
   opacity: 0.9;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 380px) {
+  .deal-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
 .linkish {
@@ -795,4 +817,80 @@ body {
   margin: 10px 0 0;
   font-size: 0.72rem;
   color: var(--muted);
+}
+
+
+/* Data refresh bar */
+.data-bar {
+  margin-bottom: 12px;
+}
+
+.data-bar-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.btn-refresh {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-refresh:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.data-stamp {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.data-error {
+  margin: 8px 0 0;
+  font-size: 0.75rem;
+  color: var(--bad);
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0 8px;
+}
+
+.pager-btn {
+  min-height: 40px;
+  min-width: 72px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.pager-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pager-status {
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
