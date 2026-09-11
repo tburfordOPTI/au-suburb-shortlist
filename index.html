@@ -346,6 +346,16 @@ body {
   margin-bottom: 14px;
 }
 
+.metrics.metrics-4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 420px) {
+  .metrics.metrics-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .metric {
   background: var(--bg);
   border-radius: 10px;
@@ -655,7 +665,7 @@ body {
           <li>Use <strong>Domain</strong> / <strong>REA</strong> to open listings (price-capped, type-matched).</li>
           <li>Optional: tick up to 3 suburbs to compare side-by-side.</li>
         </ol>
-        <p class="howto-note">Yields shown are gross. Crime badges are vs state / metro baselines — verify street-level before buying.</p>
+        <p class="howto-note">Yield = median weekly rent × 52 ÷ median price (gross). Rent is matched to dwelling type (typ. 2-bed units / 3-bed houses). Crime badges vs state baselines — verify street-level.</p>
       </details>
     </header>
 
@@ -693,7 +703,7 @@ body {
 
     <footer class="footer">
       <p><strong>Not financial advice.</strong> Data is a personal screen, not a recommendation.</p>
-      <p>Yields are <strong>gross</strong> (before costs). Crime badges compare suburb / SA2 or division proxies to state or metro baselines — always verify street-level.</p>
+      <p>Yields are <strong>gross</strong>: <code>rent × 52 ÷ median</code>, using type-matched suburb median rent (typ. 2-bed unit / 3-bed house). Before costs. Crime badges are relative — verify street-level.</p>
       <p class="footer-meta">Links open Domain.com.au &amp; realestate.com.au in a new tab · Price cap default $500k</p>
     </footer>
   </div>
@@ -711,12 +721,14 @@ const SUBURBS = [
     state: "VIC",
     postcode: "3168",
     type: "unit",
+    beds: 2,
     median: 384000,
+    rentWeekly: 565,
     growth1y: 10.9,
-    grossYield: 6.9,
     crime: "AVERAGE",
     daysToLease: 22,
-    note: "Lowest entry + strongest dual yield; property crime modestly above VIC (campus/employment node)",
+    note: "Unit median rent (suburb). Yield = rent×52÷median. Crime AVERAGE; campus/employment node.",
+    rentSource: "Andrea Monti / unit market Aug 2026",
     tier: "unit",
   },
   {
@@ -724,12 +736,14 @@ const SUBURBS = [
     state: "SA",
     postcode: "5032",
     type: "unit",
+    beds: 2,
     median: 455000,
+    rentWeekly: 491,
     growth1y: 27.1,
-    grossYield: 5.0,
     crime: "AVERAGE",
     daysToLease: 17,
-    note: "Hot 100 renewal corridor; ≈ SA crime baseline",
+    note: "Unit median rent (suburb). Hot 100 renewal corridor.",
+    rentSource: "Andrea Monti unit rent Aug 2026",
     tier: "unit",
   },
   {
@@ -737,12 +751,14 @@ const SUBURBS = [
     state: "NSW",
     postcode: "2195",
     type: "unit",
+    beds: 2,
     median: 466000,
+    rentWeekly: 545,
     growth1y: 8.6,
-    grossYield: 5.5,
     crime: "LOW",
     daysToLease: 19,
-    note: "Below NSW on violent + property crime; Sydney yield play",
+    note: "Unit median rent (suburb). Below NSW crime baselines.",
+    rentSource: "Andrea Monti unit rent Jul 2026",
     tier: "unit",
   },
   {
@@ -750,12 +766,14 @@ const SUBURBS = [
     state: "NSW",
     postcode: "2195",
     type: "unit",
+    beds: 2,
     median: 480000,
+    rentWeekly: 540,
     growth1y: 9.1,
-    grossYield: 5.7,
     crime: "AVERAGE",
     daysToLease: 19,
-    note: "Sydney ISW; liquid rental market; property crime well below NSW",
+    note: "Unit median rent Q2 2026 (Heatmaps). Liquid rental market.",
+    rentSource: "Heatmaps unit rent Q2 2026",
     tier: "unit",
   },
   {
@@ -764,12 +782,14 @@ const SUBURBS = [
     state: "TAS",
     postcode: "7320",
     type: "house",
+    beds: 3,
     median: 444000,
+    rentWeekly: 442,
     growth1y: 24,
     growth5y: 94.9,
-    grossYield: 5.1,
     crime: "LOW",
-    note: "Burnie — strong multi-year growth; crime via Burnie division proxy; verify street-level",
+    note: "House median rent (suburb, typ. 3-bed). Verify street-level.",
+    rentSource: "Andrea Monti house rent ~2026",
     tier: "house",
   },
   {
@@ -777,23 +797,28 @@ const SUBURBS = [
     state: "NT",
     postcode: "0832",
     type: "house",
-    median: 373000,
+    beds: 3,
+    median: 598000,
+    rentWeekly: 670,
     growth1y: 30,
-    grossYield: 6.0,
     crime: "AVERAGE",
-    note: "Palmerston cluster; AVERAGE vs Darwin/Palmerston",
-    tier: "house",
+    note: "House medians refreshed to 2026 market (~$598k) — above $500k budget; keep as stretch. Typ. 3–4 bed house rent.",
+    rentSource: "YIP / OnTheHouse house rent mid-2026",
+    tier: "stretch",
+    maxPrice: 650000,
   },
   {
     suburb: "Merbein",
     state: "VIC",
     postcode: "3505",
     type: "house",
+    beds: 3,
     median: 441000,
+    rentWeekly: 450,
     growth1y: 26,
-    grossYield: 5.0,
     crime: "ELEVATED",
-    note: "Mildura regional; violent ~1.6× VIC but property below — flagged",
+    note: "House median rent for typ. 3-bed. Crime elevated flag.",
+    rentSource: "StMate / PropRadar house rent ~2025–26",
     tier: "house",
   },
   {
@@ -801,17 +826,34 @@ const SUBURBS = [
     state: "WA",
     postcode: "6536",
     type: "house",
+    beds: 3,
     median: 515000,
+    rentWeekly: 450,
     growth1y: 40.2,
-    grossYield: 4.8,
     crime: "LOW",
-    note: "Stretch just over $500k; growth rocket; crime below WA",
+    note: "House market rent (REIWA-style suburb median); typ. 3-bed. Stretch ticket.",
+    rentSource: "QuickProperty / REIWA market rent Feb 2026",
     tier: "stretch",
     maxPrice: 550000,
   },
 ];
 
 const CRIME_RANK = { LOW: 0, AVERAGE: 1, ELEVATED: 2 };
+
+function rentLabel(item) {
+  const bed = item.beds != null ? `${item.beds}-bed ` : "";
+  const kind = item.type === "house" ? "house" : "unit";
+  return `${bed}${kind}`.trim();
+}
+
+/** Gross yield % from weekly rent and median price (1 decimal). */
+function computedYield(item) {
+  if (typeof item.rentWeekly !== "number" || typeof item.median !== "number" || item.median <= 0) {
+    return null;
+  }
+  return Math.round((item.rentWeekly * 52 / item.median) * 1000) / 10;
+}
+
 
 /* ---------- URL builders ---------- */
 
@@ -866,6 +908,11 @@ function buildReaNeighbourhoodUrl(item) {
 function formatPrice(n) {
   if (n == null) return "—";
   return "$" + Math.round(n).toLocaleString("en-AU");
+}
+
+function formatRent(n) {
+  if (typeof n !== "number") return "—";
+  return "$" + Math.round(n).toLocaleString("en-AU") + "/wk";
 }
 
 function formatPct(n, digits = 1) {
@@ -926,9 +973,9 @@ function filteredList() {
   list = list.slice().sort((a, b) => {
     switch (state.sort) {
       case "yield": {
-        const ay = a.grossYield == null ? -1 : a.grossYield;
-        const by = b.grossYield == null ? -1 : b.grossYield;
-        return by - ay;
+        const ay = computedYield(a);
+        const by = computedYield(b);
+        return (by == null ? -1 : by) - (ay == null ? -1 : ay);
       }
       case "price":
         return a.median - b.median;
@@ -950,7 +997,7 @@ function renderCard(item) {
   const expanded = state.expanded.has(key);
   const compared = state.compare.has(key);
   const growth = formatPct(item.growth1y);
-  const yld = typeof item.grossYield === 'number' ? `${item.grossYield.toFixed(1)}%` : null;
+  const gy = computedYield(item);
   const domainUrl = buildDomainUrl(item);
   const reaUrl = buildReaUrl(item);
   const neighUrl = buildReaNeighbourhoodUrl(item);
@@ -963,7 +1010,7 @@ function renderCard(item) {
       <div class="card-top">
         <div class="card-title-block">
           <h2 class="card-name">${escapeHtml(displayName(item))}</h2>
-          <p class="card-meta">${escapeHtml(item.state)} · ${escapeHtml(item.postcode)}</p>
+          <p class="card-meta">${escapeHtml(item.state)} · ${escapeHtml(item.postcode)} · ${escapeHtml(rentLabel(item))}</p>
         </div>
         <div class="badges">
           <span class="${typeBadgeClass}">${escapeHtml(typeLabel(item))}</span>
@@ -971,10 +1018,14 @@ function renderCard(item) {
         </div>
       </div>
 
-      <div class="metrics">
+      <div class="metrics metrics-4">
         <div class="metric">
           <span class="metric-label">Median</span>
           <span class="metric-value">${formatPrice(item.median)}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Rent</span>
+          <span class="metric-value">${formatRent(item.rentWeekly)}</span>
         </div>
         <div class="metric">
           <span class="metric-label">1yr growth</span>
@@ -982,7 +1033,7 @@ function renderCard(item) {
         </div>
         <div class="metric">
           <span class="metric-label">Yield</span>
-          <span class="metric-value ${yieldClass(item.grossYield)}">${yld != null ? escapeHtml(yld) : "—"}</span>
+          <span class="metric-value ${yieldClass(gy)}">${gy != null ? escapeHtml(gy.toFixed(1) + "%") : "—"}</span>
         </div>
       </div>
 
@@ -1004,6 +1055,8 @@ function renderCard(item) {
       <div class="card-details">
         <p class="note">${escapeHtml(item.note || "")}</p>
         <div class="extra-meta">
+          <span>Yield = ${formatRent(item.rentWeekly)} × 52 ÷ ${formatPrice(item.median)}</span>
+          ${item.rentSource ? `<span>Rent: ${escapeHtml(item.rentSource)}</span>` : ""}
           ${item.daysToLease != null ? `<span>Days to lease: ${item.daysToLease}</span>` : ""}
           ${item.growth5y != null ? `<span>5yr growth: ${escapeHtml(formatPct(item.growth5y))}</span>` : ""}
           ${item.maxPrice != null ? `<span>Link max: ${formatPrice(item.maxPrice)}</span>` : ""}
@@ -1036,15 +1089,17 @@ function renderCompare() {
   grid.innerHTML = items
     .map((item) => {
       const growth = formatPct(item.growth1y) || "—";
-      const yld = typeof item.grossYield === 'number' ? `${item.grossYield.toFixed(1)}%` : "—";
+      const gy = computedYield(item);
+      const yld = gy != null ? `${gy.toFixed(1)}%` : "—";
       return `
         <div class="compare-item">
           <h3>${escapeHtml(displayName(item))}</h3>
           <dl>
-            <dt>Type</dt><dd>${escapeHtml(typeLabel(item))}</dd>
+            <dt>Type</dt><dd>${escapeHtml(rentLabel(item))}</dd>
             <dt>Median</dt><dd>${formatPrice(item.median)}</dd>
+            <dt>Rent</dt><dd>${formatRent(item.rentWeekly)}</dd>
             <dt>Growth</dt><dd class="${growthClass(item.growth1y)}">${escapeHtml(growth)}</dd>
-            <dt>Yield</dt><dd class="${yieldClass(item.grossYield)}">${escapeHtml(yld)}</dd>
+            <dt>Yield</dt><dd class="${yieldClass(gy)}">${escapeHtml(yld)}</dd>
             <dt>Crime</dt><dd>${escapeHtml(item.crime)}</dd>
           </dl>
         </div>

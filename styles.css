@@ -338,6 +338,16 @@ body {
   margin-bottom: 14px;
 }
 
+.metrics.metrics-4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 420px) {
+  .metrics.metrics-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .metric {
   background: var(--bg);
   border-radius: 10px;
