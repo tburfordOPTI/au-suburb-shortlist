@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1419" />
+  <title>AU Suburb Shortlist — Investment Screen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <p class="eyebrow">Tom’s shortlist</p>
+      <h1>AU Suburb Screen</h1>
+      <p class="tagline">Growth · yield · cashflow after your mortgage</p>
+
+      <details class="howto">
+        <summary>How to use</summary>
+        <ol>
+          <li>Set your <strong>budget</strong>, <strong>deposit</strong>, and <strong>rate</strong> in Your deal (rate defaults to RBA investor average — override anytime).</li>
+          <li>List filters to suburbs whose median fits your budget. Sort by cashflow, yield, growth, price, or crime.</li>
+          <li>Each card shows rent vs mortgage and <strong>net $/wk</strong> after loan costs.</li>
+          <li>Tap <strong>Domain</strong> / <strong>REA</strong> for listings capped at your budget.</li>
+        </ol>
+        <p class="howto-note">Yield = rent × 52 ÷ median (gross). Cashflow uses 30-year P&amp;I on (purchase − deposit). Typ. 2-bed units / 3-bed houses. Not financial advice.</p>
+      </details>
+    </header>
+
+    <section class="deal" id="deal" aria-label="Your deal">
+      <div class="deal-top">
+        <h2>Your deal</h2>
+        <p class="deal-summary" id="finance-summary"></p>
+      </div>
+      <div class="deal-presets" aria-label="Budget presets">
+        <button type="button" class="chip" data-budget="400000">$400k</button>
+        <button type="button" class="chip" data-budget="500000">$500k</button>
+        <button type="button" class="chip" data-budget="600000">$600k</button>
+        <button type="button" class="chip" data-budget="700000">$700k</button>
+      </div>
+      <div class="deal-fields">
+        <label class="field">
+          <span>Investment budget</span>
+          <input id="budget" type="number" inputmode="numeric" min="50000" step="10000" />
+        </label>
+        <label class="field">
+          <span>Deposit</span>
+          <input id="deposit" type="number" inputmode="numeric" min="0" step="5000" />
+        </label>
+        <label class="field field-rate">
+          <span>Interest rate % <button type="button" class="linkish" id="rate-reset" hidden>Reset to market</button></span>
+          <input id="rate" type="number" inputmode="decimal" min="0" max="20" step="0.01" />
+          <small id="rate-hint">Default: RBA avg new investor P&amp;I · May 2026 (6.31%)</small>
+        </label>
+      </div>
+    </section>
+
+    <div class="filters" id="filters" role="search">
+      <div class="type-tabs" role="tablist" aria-label="Property type">
+        <button type="button" class="tab active" data-type="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="tab" data-type="house" role="tab" aria-selected="false">Houses</button>
+        <button type="button" class="tab" data-type="unit" role="tab" aria-selected="false">Units</button>
+      </div>
+
+      <div class="sort-row">
+        <label class="sr-only" for="sort">Sort by</label>
+        <select id="sort" class="sort-select">
+          <option value="cashflow" selected>Sort: Cashflow</option>
+          <option value="yield">Sort: Yield</option>
+          <option value="growth">Sort: Growth</option>
+          <option value="price">Sort: Price</option>
+          <option value="crime">Sort: Crime</option>
+        </select>
+        <label class="search-wrap">
+          <span class="sr-only">Search suburbs</span>
+          <input type="search" id="search" placeholder="Search suburb…" autocomplete="off" />
+        </label>
+      </div>
+    </div>
+
+    <p class="count" id="count" aria-live="polite"></p>
+
+    <main id="cards" class="cards" aria-label="Suburb shortlist"></main>
+
+    <section class="compare" id="compare" hidden>
+      <h2>Compare <span id="compare-count">0</span>/3</h2>
+      <div class="compare-grid" id="compare-grid"></div>
+      <button type="button" class="btn-clear" id="clear-compare">Clear comparison</button>
+    </section>
+
+    <footer class="footer">
+      <p><strong>Not financial advice.</strong> Illustrative P&amp;I only — ignores tax, vacancy, fees, offsets, stamp duty, and lender rules.</p>
+      <p>Yields are <strong>gross</strong>: <code>rent × 52 ÷ median</code>. Net cashflow = rent − loan repayment (30yr P&amp;I). Crime badges are relative — verify street-level.</p>
+      <p class="footer-meta">Domain &amp; REA links use your budget as the price cap</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
