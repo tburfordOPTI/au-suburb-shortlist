@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f1419" />
+  <title>AU Suburb Shortlist — Investment Screen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <p class="eyebrow">Tom’s shortlist</p>
+      <h1>AU Suburb Screen</h1>
+      <p class="tagline">Growth · yield · crime-filtered picks under ~$500k</p>
+
+      <details class="howto">
+        <summary>How to use</summary>
+        <ol>
+          <li>Filter by <strong>Houses</strong> or <strong>Units</strong>, then sort by growth, yield, price, or crime.</li>
+          <li>Tap a card to expand notes and days-to-lease.</li>
+          <li>Use <strong>Domain</strong> / <strong>REA</strong> to open listings (price-capped, type-matched).</li>
+          <li>Optional: tick up to 3 suburbs to compare side-by-side.</li>
+        </ol>
+        <p class="howto-note">Yields shown are gross. Crime badges are vs state / metro baselines — verify street-level before buying.</p>
+      </details>
+    </header>
+
+    <div class="filters" id="filters" role="search">
+      <div class="type-tabs" role="tablist" aria-label="Property type">
+        <button type="button" class="tab active" data-type="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="tab" data-type="house" role="tab" aria-selected="false">Houses</button>
+        <button type="button" class="tab" data-type="unit" role="tab" aria-selected="false">Units</button>
+      </div>
+
+      <div class="sort-row">
+        <label class="sr-only" for="sort">Sort by</label>
+        <select id="sort" class="sort-select">
+          <option value="growth">Sort: Growth</option>
+          <option value="yield">Sort: Yield</option>
+          <option value="price">Sort: Price</option>
+          <option value="crime">Sort: Crime</option>
+        </select>
+        <label class="search-wrap">
+          <span class="sr-only">Search suburbs</span>
+          <input type="search" id="search" placeholder="Search suburb…" autocomplete="off" />
+        </label>
+      </div>
+    </div>
+
+    <p class="count" id="count" aria-live="polite"></p>
+
+    <main id="cards" class="cards" aria-label="Suburb shortlist"></main>
+
+    <section class="compare" id="compare" hidden>
+      <h2>Compare <span id="compare-count">0</span>/3</h2>
+      <div class="compare-grid" id="compare-grid"></div>
+      <button type="button" class="btn-clear" id="clear-compare">Clear comparison</button>
+    </section>
+
+    <footer class="footer">
+      <p><strong>Not financial advice.</strong> Data is a personal screen, not a recommendation.</p>
+      <p>Yields are <strong>gross</strong> (before costs). Crime badges compare suburb / SA2 or division proxies to state or metro baselines — always verify street-level.</p>
+      <p class="footer-meta">Links open Domain.com.au &amp; realestate.com.au in a new tab · Price cap default $500k</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
