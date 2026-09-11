@@ -12,7 +12,7 @@ const SUBURBS = [
     type: "unit",
     median: 384000,
     growth1y: 10.9,
-    yield: 6.9,
+    grossYield: 6.9,
     crime: "AVERAGE",
     daysToLease: 22,
     note: "Lowest entry + strongest dual yield; property crime modestly above VIC (campus/employment node)",
@@ -25,7 +25,7 @@ const SUBURBS = [
     type: "unit",
     median: 455000,
     growth1y: 27.1,
-    yield: 5.0,
+    grossYield: 5.0,
     crime: "AVERAGE",
     daysToLease: 17,
     note: "Hot 100 renewal corridor; ≈ SA crime baseline",
@@ -38,7 +38,7 @@ const SUBURBS = [
     type: "unit",
     median: 466000,
     growth1y: 8.6,
-    yield: 5.5,
+    grossYield: 5.5,
     crime: "LOW",
     daysToLease: 19,
     note: "Below NSW on violent + property crime; Sydney yield play",
@@ -51,7 +51,7 @@ const SUBURBS = [
     type: "unit",
     median: 480000,
     growth1y: 9.1,
-    yield: 5.7,
+    grossYield: 5.7,
     crime: "AVERAGE",
     daysToLease: 19,
     note: "Sydney ISW; liquid rental market; property crime well below NSW",
@@ -66,7 +66,7 @@ const SUBURBS = [
     median: 444000,
     growth1y: 24,
     growth5y: 94.9,
-    yield: null,
+    grossYield: 5.1,
     crime: "LOW",
     note: "Burnie — strong multi-year growth; crime via Burnie division proxy; verify street-level",
     tier: "house",
@@ -78,7 +78,7 @@ const SUBURBS = [
     type: "house",
     median: 373000,
     growth1y: 30,
-    yield: null,
+    grossYield: 6.0,
     crime: "AVERAGE",
     note: "Palmerston cluster; AVERAGE vs Darwin/Palmerston",
     tier: "house",
@@ -90,7 +90,7 @@ const SUBURBS = [
     type: "house",
     median: 441000,
     growth1y: 26,
-    yield: null,
+    grossYield: 5.0,
     crime: "ELEVATED",
     note: "Mildura regional; violent ~1.6× VIC but property below — flagged",
     tier: "house",
@@ -102,7 +102,7 @@ const SUBURBS = [
     type: "house",
     median: 515000,
     growth1y: 40.2,
-    yield: null,
+    grossYield: 4.8,
     crime: "LOW",
     note: "Stretch just over $500k; growth rocket; crime below WA",
     tier: "stretch",
@@ -225,8 +225,8 @@ function filteredList() {
   list = list.slice().sort((a, b) => {
     switch (state.sort) {
       case "yield": {
-        const ay = a.yield == null ? -1 : a.yield;
-        const by = b.yield == null ? -1 : b.yield;
+        const ay = a.grossYield == null ? -1 : a.grossYield;
+        const by = b.grossYield == null ? -1 : b.grossYield;
         return by - ay;
       }
       case "price":
@@ -249,7 +249,7 @@ function renderCard(item) {
   const expanded = state.expanded.has(key);
   const compared = state.compare.has(key);
   const growth = formatPct(item.growth1y);
-  const yld = item.yield != null ? `${item.yield.toFixed(1)}%` : null;
+  const yld = typeof item.grossYield === 'number' ? `${item.grossYield.toFixed(1)}%` : null;
   const domainUrl = buildDomainUrl(item);
   const reaUrl = buildReaUrl(item);
   const neighUrl = buildReaNeighbourhoodUrl(item);
@@ -281,7 +281,7 @@ function renderCard(item) {
         </div>
         <div class="metric">
           <span class="metric-label">Yield</span>
-          <span class="metric-value ${yieldClass(item.yield)}">${yld != null ? escapeHtml(yld) : "n/a"}</span>
+          <span class="metric-value ${yieldClass(item.grossYield)}">${yld != null ? escapeHtml(yld) : "—"}</span>
         </div>
       </div>
 
@@ -335,7 +335,7 @@ function renderCompare() {
   grid.innerHTML = items
     .map((item) => {
       const growth = formatPct(item.growth1y) || "—";
-      const yld = item.yield != null ? `${item.yield.toFixed(1)}%` : "n/a";
+      const yld = typeof item.grossYield === 'number' ? `${item.grossYield.toFixed(1)}%` : "—";
       return `
         <div class="compare-item">
           <h3>${escapeHtml(displayName(item))}</h3>
@@ -343,7 +343,7 @@ function renderCompare() {
             <dt>Type</dt><dd>${escapeHtml(typeLabel(item))}</dd>
             <dt>Median</dt><dd>${formatPrice(item.median)}</dd>
             <dt>Growth</dt><dd class="${growthClass(item.growth1y)}">${escapeHtml(growth)}</dd>
-            <dt>Yield</dt><dd class="${yieldClass(item.yield)}">${escapeHtml(yld)}</dd>
+            <dt>Yield</dt><dd class="${yieldClass(item.grossYield)}">${escapeHtml(yld)}</dd>
             <dt>Crime</dt><dd>${escapeHtml(item.crime)}</dd>
           </dl>
         </div>
